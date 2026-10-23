@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,10 @@
             background: #f4f6f8;
             margin: 0;
             padding: 20px;
+            color: #222;
         }
 
-        .quiz {
+        .app {
             max-width: 600px;
             margin: 30px auto;
             background: white;
@@ -24,6 +26,17 @@
 
         h1 {
             color: #174a7e;
+        }
+
+        .main-button {
+            width: 100%;
+            padding: 16px;
+            background: #174a7e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         .answer {
@@ -53,69 +66,110 @@
             border-color: red;
         }
 
+        #quiz-screen,
+        #explanation {
+            display: none;
+        }
+
         #explanation {
             margin-top: 20px;
             padding: 15px;
             background: #eef4fa;
             border-radius: 10px;
-            display: none;
         }
     </style>
 </head>
 
 <body>
 
-<div class="quiz">
+<div class="app">
 
-    <h1>Quiz PIIB</h1>
+    <!-- EKRAN STARTOWY -->
 
-    <p><strong>Pytanie 1 z 10</strong></p>
+    <div id="start-screen">
 
-    <h2>
-        Ustawa Prawo budowlane normuje sprawy utrzymania
-        i rozbiórki:
-    </h2>
-
-    <button class="answer" onclick="checkAnswer(this, false)">
-        A. tylko budynków mieszkalnych i użyteczności publicznej
-    </button>
-
-    <button class="answer" onclick="checkAnswer(this, true)">
-        B. obiektów budowlanych
-    </button>
-
-    <button class="answer" onclick="checkAnswer(this, false)">
-        C. tylko budynków trwale związanych z gruntem
-    </button>
-
-    <div id="result"></div>
-
-    <div id="explanation">
-
-        <h3>Dlaczego?</h3>
+        <h1>Quiz PIIB</h1>
 
         <p>
-            Prawo budowlane reguluje między innymi projektowanie,
-            budowę, utrzymanie i rozbiórkę obiektów budowlanych.
+            Przygotowanie do egzaminu na uprawnienia budowlane
         </p>
 
-        <h3>Warto zapamiętać</h3>
+        <button class="main-button" onclick="startQuiz()">
+            Rozpocznij test
+        </button>
 
-        <p>
-            Pojęcie „obiekt budowlany” jest szersze niż samo pojęcie
-            „budynek”.
-        </p>
+        <hr>
 
-        <p>
-            <strong>Podstawa prawna:</strong>
-            art. 1 ustawy Prawo budowlane.
-        </p>
+        <h2>Twoje wyniki</h2>
+
+        <p>Nie masz jeszcze zapisanych wyników.</p>
+
+    </div>
+
+
+    <!-- EKRAN PYTANIA -->
+
+    <div id="quiz-screen">
+
+        <p><strong>Pytanie 1 z 10</strong></p>
+
+        <h2>
+            Ustawa Prawo budowlane normuje sprawy
+            utrzymania i rozbiórki:
+        </h2>
+
+        <button class="answer" onclick="checkAnswer(this, false)">
+            A. tylko budynków mieszkalnych i użyteczności publicznej
+        </button>
+
+        <button class="answer" onclick="checkAnswer(this, true)">
+            B. obiektów budowlanych
+        </button>
+
+        <button class="answer" onclick="checkAnswer(this, false)">
+            C. tylko budynków trwale związanych z gruntem
+        </button>
+
+        <div id="result"></div>
+
+        <div id="explanation">
+
+            <h3>Dlaczego?</h3>
+
+            <p>
+                Prawo budowlane reguluje między innymi
+                projektowanie, budowę, utrzymanie oraz
+                rozbiórkę obiektów budowlanych.
+            </p>
+
+            <h3>Warto zapamiętać</h3>
+
+            <p>
+                Pojęcie „obiekt budowlany” jest szersze
+                niż samo pojęcie „budynek”.
+            </p>
+
+            <p>
+                <strong>Podstawa prawna:</strong>
+                art. 1 ustawy Prawo budowlane.
+            </p>
+
+        </div>
 
     </div>
 
 </div>
 
+
 <script>
+
+function startQuiz() {
+
+    document.getElementById("start-screen").style.display = "none";
+
+    document.getElementById("quiz-screen").style.display = "block";
+}
+
 
 function checkAnswer(button, isCorrect) {
 
