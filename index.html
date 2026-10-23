@@ -1,26 +1,152 @@
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz PIIB</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #174a7e;
+        }
+
+        .answer {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: white;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .answer:hover {
+            background: #eef4fa;
+        }
+
+        .correct {
+            background: #d9f7df;
+            border-color: green;
+        }
+
+        .wrong {
+            background: #ffdede;
+            border-color: red;
+        }
+
+        #explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eef4fa;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 
+<div class="quiz">
+
     <h1>Quiz PIIB</h1>
 
-    <p>Przygotowanie do egzaminu na uprawnienia budowlane</p>
+    <p><strong>Pytanie 1 z 10</strong></p>
 
-    <button>Rozpocznij test</button>
+    <h2>
+        Ustawa Prawo budowlane normuje sprawy utrzymania
+        i rozbiórki:
+    </h2>
 
-    <hr>
+    <button class="answer" onclick="checkAnswer(this, false)">
+        A. tylko budynków mieszkalnych i użyteczności publicznej
+    </button>
 
-    <h2>Twoje wyniki</h2>
+    <button class="answer" onclick="checkAnswer(this, true)">
+        B. obiektów budowlanych
+    </button>
 
-    <p>Nie masz jeszcze zapisanych wyników.</p>
+    <button class="answer" onclick="checkAnswer(this, false)">
+        C. tylko budynków trwale związanych z gruntem
+    </button>
+
+    <div id="result"></div>
+
+    <div id="explanation">
+
+        <h3>Dlaczego?</h3>
+
+        <p>
+            Prawo budowlane reguluje między innymi projektowanie,
+            budowę, utrzymanie i rozbiórkę obiektów budowlanych.
+        </p>
+
+        <h3>Warto zapamiętać</h3>
+
+        <p>
+            Pojęcie „obiekt budowlany” jest szersze niż samo pojęcie
+            „budynek”.
+        </p>
+
+        <p>
+            <strong>Podstawa prawna:</strong>
+            art. 1 ustawy Prawo budowlane.
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+function checkAnswer(button, isCorrect) {
+
+    const buttons = document.querySelectorAll(".answer");
+
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    if (isCorrect) {
+
+        button.classList.add("correct");
+
+        document.getElementById("result").innerHTML =
+            "<h3 style='color:green'>✓ Dobra odpowiedź!</h3>";
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons[1].classList.add("correct");
+
+        document.getElementById("result").innerHTML =
+            "<h3 style='color:red'>✕ Zła odpowiedź</h3>" +
+            "<p>Prawidłowa odpowiedź: <strong>B</strong></p>";
+    }
+
+    document.getElementById("explanation").style.display = "block";
+}
+
+</script>
 
 </body>
-
 </html>
