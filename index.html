@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Quiz PIIB</title>
 
     <style>
+
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f8;
@@ -31,6 +33,7 @@
         .main-button {
             width: 100%;
             padding: 16px;
+            margin-top: 15px;
             background: #174a7e;
             color: white;
             border: none;
@@ -67,7 +70,9 @@
         }
 
         #quiz-screen,
-        #explanation {
+        #result-screen,
+        #explanation,
+        #next-button {
             display: none;
         }
 
@@ -77,14 +82,29 @@
             background: #eef4fa;
             border-radius: 10px;
         }
+
+        .progress {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .score {
+            font-size: 42px;
+            font-weight: bold;
+            color: #174a7e;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- EKRAN STARTOWY -->
+
+    <!-- START -->
 
     <div id="start-screen">
 
@@ -98,109 +118,187 @@
             Rozpocznij test
         </button>
 
-        <hr>
-
-        <h2>Twoje wyniki</h2>
-
-        <p>Nie masz jeszcze zapisanych wyników.</p>
-
     </div>
 
 
-    <!-- EKRAN PYTANIA -->
+    <!-- QUIZ -->
 
     <div id="quiz-screen">
 
-        <p><strong>Pytanie 1 z 10</strong></p>
+        <p class="progress" id="progress">
+            Pytanie
+        </p>
 
-        <h2>
-            Ustawa Prawo budowlane normuje sprawy
-            utrzymania i rozbiórki:
+        <h2 id="question">
+            Pytanie
         </h2>
 
-        <button class="answer" onclick="checkAnswer(this, false)">
-            A. tylko budynków mieszkalnych i użyteczności publicznej
+
+        <button class="answer" id="answer0" onclick="checkAnswer(0)">
         </button>
 
-        <button class="answer" onclick="checkAnswer(this, true)">
-            B. obiektów budowlanych
+        <button class="answer" id="answer1" onclick="checkAnswer(1)">
         </button>
 
-        <button class="answer" onclick="checkAnswer(this, false)">
-            C. tylko budynków trwale związanych z gruntem
+        <button class="answer" id="answer2" onclick="checkAnswer(2)">
         </button>
 
-        <div id="result"></div>
+
+        <div id="answer-result"></div>
+
 
         <div id="explanation">
 
             <h3>Dlaczego?</h3>
 
-            <p>
-                Prawo budowlane reguluje między innymi
-                projektowanie, budowę, utrzymanie oraz
-                rozbiórkę obiektów budowlanych.
-            </p>
+            <p id="why"></p>
+
 
             <h3>Warto zapamiętać</h3>
 
-            <p>
-                Pojęcie „obiekt budowlany” jest szersze
-                niż samo pojęcie „budynek”.
-            </p>
+            <p id="remember"></p>
+
 
             <p>
                 <strong>Podstawa prawna:</strong>
-                art. 1 ustawy Prawo budowlane.
+                <span id="legal"></span>
             </p>
 
         </div>
 
+
+        <button
+            class="main-button"
+            id="next-button"
+            onclick="nextQuestion()">
+
+            Następne pytanie
+
+        </button>
+
     </div>
+
+
+    <!-- WYNIK -->
+
+    <div id="result-screen">
+
+        <h1>Koniec testu 🎉</h1>
+
+        <p>Twój wynik:</p>
+
+        <div class="score" id="final-score"></div>
+
+        <button class="main-button" onclick="restartQuiz()">
+            Rozpocznij ponownie
+        </button>
+
+    </div>
+
 
 </div>
 
 
 <script>
 
-function startQuiz() {
 
-    document.getElementById("start-screen").style.display = "none";
+const questions = [
 
-    document.getElementById("quiz-screen").style.display = "block";
-}
+    {
+        question:
+            "Ustawa Prawo budowlane normuje sprawy utrzymania i rozbiórki:",
+
+        answers: [
+            "A. tylko budynków mieszkalnych i użyteczności publicznej",
+            "B. obiektów budowlanych",
+            "C. tylko budynków trwale związanych z gruntem"
+        ],
+
+        correct: 1,
+
+        why:
+            "Prawo budowlane reguluje projektowanie, budowę, utrzymanie i rozbiórkę obiektów budowlanych.",
+
+        remember:
+            "Pojęcie „obiekt budowlany” jest szersze niż samo pojęcie „budynek”.",
+
+        legal:
+            "art. 1 ustawy Prawo budowlane"
+    },
 
 
-function checkAnswer(button, isCorrect) {
+    {
+        question:
+            "Ustawa Prawo budowlane normuje sprawy budowy:",
 
-    const buttons = document.querySelectorAll(".answer");
+        answers: [
+            "A. tylko obiektów realizowanych ze środków publicznych",
+            "B. tylko budynków trwale związanych z gruntem",
+            "C. obiektów budowlanych"
+        ],
 
-    buttons.forEach(btn => {
-        btn.disabled = true;
-    });
+        correct: 2,
 
-    if (isCorrect) {
+        why:
+            "Prawo budowlane nie ogranicza regulacji dotyczących budowy wyłącznie do budynków lub inwestycji finansowanych ze środków publicznych.",
 
-        button.classList.add("correct");
+        remember:
+            "Na egzaminie zwracaj uwagę na słowa takie jak „tylko”, „wyłącznie” i „zawsze”. Często przesądzają one o błędności odpowiedzi.",
 
-        document.getElementById("result").innerHTML =
-            "<h3 style='color:green'>✓ Dobra odpowiedź!</h3>";
+        legal:
+            "art. 1 ustawy Prawo budowlane"
+    },
 
-    } else {
 
-        button.classList.add("wrong");
+    {
+        question:
+            "Czy ustawę Prawo budowlane stosuje się do wyrobisk górniczych?",
 
-        buttons[1].classList.add("correct");
+        answers: [
+            "A. Tak",
+            "B. Nie",
+            "C. Zależy od decyzji o lokalizacji"
+        ],
 
-        document.getElementById("result").innerHTML =
-            "<h3 style='color:red'>✕ Zła odpowiedź</h3>" +
-            "<p>Prawidłowa odpowiedź: <strong>B</strong></p>";
+        correct: 1,
+
+        why:
+            "Prawo budowlane stanowi, że ustawy nie stosuje się do wyrobisk górniczych.",
+
+        remember:
+            "Nie należy utożsamiać wyrobiska górniczego z każdym obiektem budowlanym związanym z działalnością górniczą.",
+
+        legal:
+            "art. 2 ust. 1 ustawy Prawo budowlane"
     }
 
-    document.getElementById("explanation").style.display = "block";
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+function startQuiz() {
+
+    currentQuestion = 0;
+    score = 0;
+
+    document.getElementById("start-screen").style.display = "none";
+    document.getElementById("result-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+
+    showQuestion();
 }
 
-</script>
 
-</body>
-</html>
+function showQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("progress").innerText =
+        "Pytanie " +
+        (current
